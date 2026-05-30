@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI/ML Progress Tracker</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#171a23; --panel2:#1c2130; --line:#2a3040;
+    --text:#e6e8ee; --muted:#9aa3b2; --accent:#4dd0ff; --done:#34d399;
+    --g1:#6ea8fe; --g2:#b388ff; --g3:#ffb454; --g4:#ff6b8b; --g5:#34d399;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:60px;}
+  header{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,#171a23,#1d2230);border-bottom:1px solid var(--line);padding:16px 24px;}
+  header h1{margin:0 0 10px;font-size:20px;}
+  .barwrap{display:flex;align-items:center;gap:14px;}
+  .bar{flex:1;height:14px;background:#11141d;border:1px solid var(--line);border-radius:20px;overflow:hidden;}
+  .bar > div{height:100%;width:0;background:linear-gradient(90deg,var(--g1),var(--g5));transition:width .4s;border-radius:20px;}
+  #pct{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;min-width:48px;text-align:right;}
+  #reset{background:#232838;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;}
+  #reset:hover{color:var(--text);background:#2c3346;}
+  main{max-width:920px;margin:24px auto;padding:0 18px;}
+  .phase{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:18px;overflow:hidden;}
+  .phase-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;border-left:5px solid var(--g1);}
+  .phase-head:hover{background:var(--panel2);}
+  .phase-head .when{font-size:12px;color:var(--muted);}
+  .phase-head h2{margin:0;font-size:16px;flex:1;}
+  .phase-head .count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .phase-head .chev{transition:transform .2s;color:var(--muted);}
+  .phase.collapsed .chev{transform:rotate(-90deg);}
+  .phase.collapsed .tasks{display:none;}
+  .tasks{padding:6px 14px 14px;}
+  .grp{margin-top:10px;}
+  .grp h3{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:8px 6px 4px;}
+  label.task{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:9px;cursor:pointer;font-size:14px;line-height:1.45;}
+  label.task:hover{background:var(--panel2);}
+  label.task input{margin-top:3px;width:17px;height:17px;accent-color:var(--done);flex:0 0 auto;cursor:pointer;}
+  label.task.checked span{color:var(--muted);text-decoration:line-through;}
+  .tag{font-size:10px;padding:1px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;font-weight:600;}
+  .tag.build{background:#1e3a2f;color:#6ee7b7;}
+  .tag.apply{background:#3a2440;color:#e0a3ff;}
+  .note{font-size:12px;color:var(--muted);margin:2px 6px 8px;}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🚀 AI/ML Job-Ready Progress Tracker</h1>
+  <div class="barwrap">
+    <div class="bar"><div id="fill"></div></div>
+    <span id="pct">0%</span>
+    <button id="reset">Reset</button>
+  </div>
+</header>
+<main id="app"></main>
+<footer>Progress saves automatically in this browser · <span id="dn">0</span>/<span id="tot">0</span> done · 🟩 = build/ship · 🟪 = apply</footer>
+
+<script>
+const DATA = [
+  { t:"Months 1–2 · Foundations", when:"Python + Math + Git", color:"--g1", groups:[
+    { h:"Math intuition", items:[
+      "3Blue1Brown — Essence of Linear Algebra",
+      "3Blue1Brown — Essence of Calculus",
+      "StatQuest — Statistics Fundamentals",
+    ]},
+    { h:"Python", items:[
+      "Harvard CS50P (full)",
+      "Corey Schafer — OOP series",
+      "Iterators, generators, lambda/map/filter/reduce",
+      "File handling + exceptions",
+      "🟩|Project: Movie Script Generator (push to GitHub)",
+    ]},
+    { h:"Toolchain (Layer 1)", items:[
+      "Git & GitHub: commit, branch, PR, README",
+      "Command line + venv/conda environments",
+      "Create GitHub profile + first repo",
+    ]},
+  ]},
+  { t:"Months 3–4 · Classical ML + first applications", when:"ML + SQL → apply Data Analyst", color:"--g2", groups:[
+    { h:"Data tools", items:[
+      "Keith Galli — NumPy",
+      "Keith Galli — Pandas",
+      "Matplotlib (line/scatter/hist/bar/pie)",
+      "🟩|Project: ML model from scratch (NumPy only)",
+    ]},
+    { h:"Classical ML", items:[
+      "StatQuest — ML playlist (intuition)",
+      "Andrew Ng — ML Specialization",
+      "CampusX — 100 Days of ML (hands-on)",
+      "Regression, Logistic, KNN, Naive Bayes",
+      "Decision Tree, SVM, Random Forest",
+      "K-Means, Hierarchical, DBSCAN",
+      "EDA + feature engineering + overfitting",
+    ]},
+    { h:"Job-ready basics (Layer 1)", items:[
+      "SQL: joins, GROUP BY, subqueries, window functions, CTEs",
+      "Practice SQL on DataLemur / LeetCode",
+      "Stats for interviews (p-values, A/B, Bayes)",
+      "One BI tool (Power BI / Tableau / Looker Studio)",
+      "Light DSA: ~50 easy/medium LeetCode in Python",
+    ]},
+    { h:"Projects + launch", items:[
+      "🟩|Project: Student Performance Indicator",
+      "🟩|Project: Credit Card Fraud Detection",
+      "🟩|Project: Phishing Classifier",
+      "🟪|Polish resume + LinkedIn (with metrics)",
+      "🟪|START APPLYING: Data Analyst / Junior Data roles",
+    ]},
+  ]},
+  { t:"Months 5–6 · Deep Learning + deployment", when:"PyTorch + FastAPI/Docker", color:"--g3", groups:[
+    { h:"Deep learning", items:[
+      "3Blue1Brown — Neural Networks",
+      "Daniel Bourke — PyTorch for Deep Learning",
+      "Karpathy — Neural Networks: Zero to Hero",
+      "MLP, backprop, optimizers (Adam etc.)",
+      "Regularization, dropout, batch norm, weight init",
+      "🟩|Project: MNIST digit recognition",
+      "🟩|Project: Customer Churn / House Prices",
+    ]},
+    { h:"Pro engineering (Layer 2)", items:[
+      "Wrap a model in FastAPI (REST endpoint)",
+      "Build a Streamlit or Gradio demo UI",
+      "Dockerize a project",
+      "🟩|Deploy one app live (HuggingFace Spaces / Render)",
+      "XGBoost / LightGBM / CatBoost on tabular data",
+      "Optuna tuning + proper cross-validation",
+      "Imbalanced data: SMOTE, F1/ROC-AUC, SHAP",
+    ]},
+  ]},
+  { t:"Months 7–8 · CNN/RNN/NLP + MLOps", when:"Sequence models + cloud → apply Jr ML", color:"--g4", groups:[
+    { h:"CNN · RNN · Transformers", items:[
+      "Activation functions + CNN foundations/math",
+      "CNN in PyTorch + data augmentation + pretrained models",
+      "RNN, LSTM, GRU, bidirectional RNN",
+      "Karpathy — Let's build GPT (self-attention)",
+      "🟩|Project: Skin Lesion / Tweet Sentiment / Bangla-BERT",
+    ]},
+    { h:"NLP", items:[
+      "CampusX — NLP (BoW, TF-IDF, Word2Vec, NER)",
+      "🟩|Project: Spam detection or sentiment analysis",
+    ]},
+    { h:"MLOps + cloud (Layer 2)", items:[
+      "Experiment tracking: MLflow or W&B",
+      "Data/model versioning: DVC",
+      "GitHub Actions CI (run tests on push)",
+      "Cloud basics (AWS): S3, EC2, SageMaker, IAM",
+      "Code hygiene: type hints, logging, pytest, structure",
+      "🟪|APPLY: Junior ML Engineer / GenAI developer",
+    ]},
+  ]},
+  { t:"Months 9–10 · LLMs + Generative AI", when:"LangChain/RAG/agents → deploy", color:"--g5", groups:[
+    { h:"LLMs", items:[
+      "Karpathy — Intro to Large Language Models",
+      "3Blue1Brown — Transformers/Attention chapters",
+      "Seq2Seq, encoder-decoder, text generation",
+    ]},
+    { h:"Generative AI (Layer 3)", items:[
+      "freeCodeCamp — Generative AI Full Course",
+      "freeCodeCamp — RAG from Scratch",
+      "Krish Naik — LangChain / GenAI apps",
+      "Advanced RAG: chunking, re-ranking, RAGAS eval",
+      "Vector DBs: Chroma / FAISS / Qdrant / Pinecone",
+      "Agents: LangGraph / CrewAI / function calling",
+      "Fine-tuning: LoRA / QLoRA / PEFT (once)",
+      "Local models: Ollama / vLLM",
+      "🟩|Deploy 1–2 GenAI apps publicly (live URL)",
+    ]},
+  ]},
+  { t:"Months 11–12+ · Specialize + compete", when:"Forward phase — ahead of the crowd", color:"--g2", groups:[
+    { h:"Advanced depth (Layer 3)", items:[
+      "Re-implement a transformer / paper from scratch",
+      "CV depth: YOLO / ViT / diffusion / multimodal (pick)",
+      "Model optimization: quantization, distillation, ONNX",
+      "Read papers weekly (arXiv / Papers With Code)",
+      "Reproduce one paper end-to-end",
+    ]},
+    { h:"Specialize + visibility", items:[
+      "Pick ONE specialization (GenAI / MLOps / CV / NLP / DS)",
+      "Kaggle: climb toward Expert",
+      "One open-source contribution",
+      "Build in public: blog / LinkedIn posts per project",
+      "Enter an AI hackathon",
+      "🟪|Apply to mid-level / specialized roles",
+    ]},
+  ]},
+];
+
+const app = document.getElementById('app');
+const KEY = 'aiml-tracker-v1';
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; }
+
+let id = 0;
+DATA.forEach((ph, pi) => {
+  const phase = document.createElement('section');
+  phase.className = 'phase';
+  const head = document.createElement('div');
+  head.className = 'phase-head';
+  head.style.borderLeftColor = `var(${ph.color})`;
+  head.innerHTML = `<span class="chev">▼</span><h2>${ph.t}</h2><span class="when">${ph.when}</span><span class="count" data-c="${pi}"></span>`;
+  phase.appendChild(head);
+  const tasks = document.createElement('div');
+  tasks.className = 'tasks';
+  ph.groups.forEach(g => {
+    const grp = document.createElement('div');
+    grp.className = 'grp';
+    grp.innerHTML = `<h3>${g.h}</h3>`;
+    g.items.forEach(raw => {
+      let tag = '', text = raw;
+      if(raw.startsWith('🟩|')){ tag = '<span class="tag build">BUILD</span>'; text = raw.slice(2); }
+      else if(raw.startsWith('🟪|')){ tag = '<span class="tag apply">APPLY</span>'; text = raw.slice(2); }
+      const tid = 't'+(id++);
+      const lab = document.createElement('label');
+      lab.className = 'task' + (state[tid] ? ' checked':'');
+      lab.innerHTML = `<input type="checkbox" data-id="${tid}" ${state[tid]?'checked':''}><span>${text}${tag}</span>`;
+      grp.appendChild(lab);
+    });
+    tasks.appendChild(grp);
+  });
+  phase.appendChild(tasks);
+  app.appendChild(phase);
+  head.addEventListener('click', () => phase.classList.toggle('collapsed'));
+});
+
+const boxes = [...document.querySelectorAll('input[type=checkbox]')];
+function refresh(){
+  const done = boxes.filter(b=>b.checked).length;
+  const tot = boxes.length;
+  const pct = tot ? Math.round(done/tot*100) : 0;
+  document.getElementById('fill').style.width = pct+'%';
+  document.getElementById('pct').textContent = pct+'%';
+  document.getElementById('dn').textContent = done;
+  document.getElementById('tot').textContent = tot;
+  // per-phase counts
+  document.querySelectorAll('.phase').forEach(p=>{
+    const bs=[...p.querySelectorAll('input')];
+    const d=bs.filter(b=>b.checked).length;
+    p.querySelector('.count').textContent = d+'/'+bs.length;
+  });
+}
+boxes.forEach(b=>{
+  b.addEventListener('change', ()=>{
+    state[b.dataset.id] = b.checked;
+    localStorage.setItem(KEY, JSON.stringify(state));
+    b.closest('label').classList.toggle('checked', b.checked);
+    refresh();
+  });
+});
+document.getElementById('reset').addEventListener('click', ()=>{
+  if(!confirm('Reset all progress?')) return;
+  state={}; localStorage.removeItem(KEY);
+  boxes.forEach(b=>{ b.checked=false; b.closest('label').classList.remove('checked'); });
+  refresh();
+});
+refresh();
+</script>
+</body>
+</html>

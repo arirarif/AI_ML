@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI/ML Learning Roadmap — Mind Map</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: "Segoe UI", system-ui, sans-serif; background: #0f1117; color: #e6e8ee; }
+  #topbar {
+    height: 54px; display: flex; align-items: center; gap: 14px;
+    padding: 0 20px; background: linear-gradient(90deg,#171a23,#1d2230);
+    border-bottom: 1px solid #2a3040;
+  }
+  #topbar h1 { font-size: 17px; margin: 0; font-weight: 650; }
+  #topbar .badge { font-size: 12px; color: #9aa3b2; }
+  .markmap {
+    width: 100%; height: calc(100% - 54px);
+    /* markmap theme variables — bright text on dark bg */
+    --markmap-text-color: #f2f4f8;
+    --markmap-a-color: #4dd0ff;
+    --markmap-a-hover-color: #7afcff;
+    --markmap-circle-open-bg: #0f1117;
+  }
+  .markmap > svg { width: 100%; height: 100%; }
+  /* force bright, readable node text + colored links regardless of inline styles */
+  .markmap-foreign { color: #f2f4f8 !important; font-weight: 500; }
+  .markmap-foreign a { color: #4dd0ff !important; text-decoration: none; }
+  .markmap-foreign a:hover { color: #7afcff !important; text-decoration: underline; }
+  /* headings/branch titles a touch brighter */
+  .markmap-foreign strong, .markmap-foreign h1, .markmap-foreign h2, .markmap-foreign h3 { color: #ffffff !important; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18"></script>
+<script>
+  // configure autoloader before it runs
+  window.markmap = {
+    autoLoader: {
+      toolbar: true,           // built-in zoom / fit / expand toolbar
+      manual: false,
+      options: {
+        colorFreezeLevel: 2,
+        initialExpandLevel: 2,
+        spacingVertical: 8,
+        spacingHorizontal: 90,
+        duration: 350,
+      },
+    },
+  };
+</script>
+</head>
+<body>
+  <div id="topbar">
+    <h1>🧠 AI/ML Learning Roadmap</h1>
+    <span class="badge">GitMind-style mind map · drag to pan · scroll to zoom · click circles to fold</span>
+  </div>
+
+  <div class="markmap">
+    <script type="text/template">
+# 🧠 AI/ML Learning Roadmap
+
+## ⏱️ Total Watch Time
+- ✅ **Core path ~110h** (one main resource per topic)
+- 📚 **Everything listed ~415h** (incl. reference playlists, no Bangla)
+- ⚡ Real effort = **2–4× watch time** (pause + code along) → ~250–450h
+- ### Per phase (core)
+  - Phase 0 (Math + Python) ~25–30h
+  - Phase 1 (Data tools) ~6–8h
+  - Phase 2 (Classical ML) ~15–20h + SQL/Git ~5h
+  - Phase 3 (Deep Learning) ~25–40h
+  - Phase 4 (CNN/RNN/Transformers) ~8–12h
+  - NLP ~5–8h · LLMs ~2–3h · GenAI ~10–15h
+- 📌 Big playlists (CampusX ML ~90h, CampusX DL ~40h, Krish Naik ~30h) = **reference, not watch-all**
+
+## ❓ Is the syllabus enough?
+- ✅ Curriculum = Grade A (more complete than most bootcamps)
+- ⚠️ Missing for jobs
+  - SQL (almost every data/ML job)
+  - Git / GitHub (public portfolio)
+  - Deployment (Docker · FastAPI · cloud)
+  - Resume + portfolio (5–6 solid projects)
+- 📌 A list ≠ a course → order + projects + practice
+- ⏱️ Timeline: 6–10 months (zero) · 3–5 months (coder)
+
+## 📐 Phase 0 — Foundations
+- ### Math (intuition, ~3–4 weeks) · ~12h
+  - [3Blue1Brown — Linear Algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) ⏱️ ~3h
+  - [3Blue1Brown — Calculus](https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr) ⏱️ ~3h
+  - [StatQuest — Statistics Fundamentals](https://www.youtube.com/playlist?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9) ⏱️ ~6h
+- ### Python · ~22h
+  - [Harvard CS50P](https://www.youtube.com/watch?v=nLRL_NcnK-4) ⏱️ ~16h
+  - [Corey Schafer — OOP](https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhwlXsIBIdSeYtc) ⏱️ ~1.5h
+  - [freeCodeCamp — Python Full Course](https://www.youtube.com/watch?v=rfscVS0vtbw) ⏱️ 4h26m
+  - 🛠️ Project: Movie Script Generator
+
+## 📊 Phase 1 — Data Tools · ~9h
+- [Keith Galli — NumPy](https://www.youtube.com/watch?v=GB9ByFAIAH4) ⏱️ ~1h
+- [Keith Galli — Pandas](https://www.youtube.com/watch?v=2uvysYbKdjM) ⏱️ 1h34m
+- [Corey Schafer — Matplotlib](https://www.youtube.com/playlist?list=PL-osiE80TeTvipOqomVEeZ1HRrcEvtZB_) ⏱️ ~2.5h
+- [freeCodeCamp — Data Analysis](https://www.youtube.com/watch?v=r-uOLxNrNk8) ⏱️ 4h
+- 🛠️ Project: ML model from scratch (NumPy only)
+
+## 🤖 Phase 2 — Classical ML · core ~15–20h (+SQL/Git ~5h)
+- ### Core resources
+  - ⭐ [StatQuest — ML playlist](https://www.youtube.com/playlist?list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1) (the "why") ⏱️ ~10h
+  - ⭐ [Andrew Ng — ML Specialization](https://www.youtube.com/playlist?list=PLkDaE6sCZn6FNC6YRfRQc_FbeQrF8BwGI) ⏱️ ~30–60h
+  - ⭐ [CampusX — 100 Days of ML](https://www.youtube.com/playlist?list=PLKnIA16_Rmvbr7zKYQuBfsVkjoLcJgxHH) (the "how") ⏱️ ~80–100h (reference)
+- ### Algorithms
+  - Regression · Logistic · KNN · Naive Bayes
+  - Decision Tree · SVM · Random Forest
+  - K-Means · Hierarchical · DBSCAN
+  - EDA · Feature engineering · Overfitting
+- ### ➕ Add now (job-critical)
+  - [SQL — freeCodeCamp](https://www.youtube.com/watch?v=HXV3zeQKqGY) ⏱️ 4h
+  - [Git/GitHub — freeCodeCamp](https://www.youtube.com/watch?v=RGOj5yH7evk) ⏱️ ~1h10m
+- 🛠️ Projects: Student Performance · Credit Card Fraud · Phishing Classifier
+
+## 🧠 Phase 3 — Deep Learning · core ~25–40h
+- ⭐ [3Blue1Brown — Neural Networks](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi) ⏱️ ~2h
+- ⭐ [Daniel Bourke — PyTorch](https://www.youtube.com/watch?v=Z_ikDlimN6A) ⏱️ ~25h
+- ⭐⭐ [Karpathy — Zero to Hero](https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) ⏱️ ~15h
+- [Andrew Ng — Deep Learning Spec.](https://www.youtube.com/playlist?list=PLkDaE6sCZn6Ec-XTbcX1uRg2_u4xOEky0) ⏱️ ~30–40h
+- Topics: MLP · backprop · optimizers · regularization · batch norm
+- 🛠️ Projects: MNIST · Customer Churn · House Prices
+
+## 🖼️ Phase 4 — CNN · RNN · Transformers · core ~8–12h
+- [Daniel Bourke — CNN sections](https://www.youtube.com/watch?v=Z_ikDlimN6A) ⏱️ (part of ~25h)
+- [CampusX — 100 Days of Deep Learning (RNN/LSTM/GRU)](https://www.youtube.com/playlist?list=PLKnIA16_RmvYuZauWaPlRTC54KxSNLtNn) ⏱️ ~40h (reference)
+- ALT: [Andrew Ng — Sequence Models](https://www.youtube.com/playlist?list=PLkDaE6sCZn6F6wUI9tvS_Gw1vaFAx6rd6) ⏱️ ~15h
+- [StatQuest — Transformers/Attention](https://www.youtube.com/playlist?list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1) ⏱️ ~3h
+- ⭐ [Karpathy — Let's build GPT](https://www.youtube.com/watch?v=kCc8FmEb1nY) ⏱️ 1h56m
+- 🛠️ Projects: Bangla-BERT Hate Speech · Skin Lesion · Tweet Sentiment · Text Gen
+
+## 🚀 Track 01 — Projects
+- ### NLP
+  - ⭐ [CampusX — NLP](https://www.youtube.com/playlist?list=PLKnIA16_RmvZo7fp5kkIth6nRTeQQsjfX) ⏱️ ~20h
+  - [freeCodeCamp — NLP](https://www.youtube.com/watch?v=dIUTsFT2MeQ) ⏱️ ~5h
+- ### LLMs
+  - ⭐ [Karpathy — Intro to LLMs](https://www.youtube.com/watch?v=zjkBMFhNj_g) ⏱️ ~1h
+  - 3Blue1Brown — Transformers chapters ⏱️ ~1h
+- ### Generative AI
+  - [freeCodeCamp — GenAI Full Course](https://www.youtube.com/playlist?list=PLkz_y24mlSJY7hlQ-GyDgUCWz8TyIX_S3) ⏱️ ~25h
+  - ⭐ [freeCodeCamp — RAG from Scratch](https://www.youtube.com/watch?v=sVcwVQRHIc8) ⏱️ ~2h45m
+  - ⭐ [Krish Naik — LangChain/GenAI](https://www.youtube.com/@krishnaik06/playlists) ⏱️ ~30h+ (reference)
+  - 🛠️ Deploy 1–2 apps (Streamlit / HF Spaces)
+
+## 🎓 Track 02 — Thesis / Research
+- Topic formulation → data strategy → experiments → writing
+- Tools: arXiv · Papers With Code · Connected Papers · Zotero
+- Stanford CS230 lectures
+
+## 🇧🇩 Bangla Backup
+- [Complete ML Bangla Course](https://www.youtube.com/playlist?list=PLKdU0fuY4OFfWY36nDJDlI26jXwInSm8f) ⏱️ ~30h
+- [Data Science & AI Bangla](https://www.youtube.com/playlist?list=PLKdU0fuY4OFcot0zyVbM1-zKf_eCUK4zQ) ⏱️ ~40h
+- [aiQuest Intelligence](https://aiquest.org/)
+- Stack Learner (YouTube)
+
+## 💼 Fast-Track to a Job
+- GitHub portfolio (clean READMEs)
+- Kaggle competitions/notebooks
+- SQL + Git (non-negotiable)
+- One deployed app (live URL)
+- Resume + LinkedIn (metrics!)
+- Re-implement from scratch once
+- DSA basics in Python + mock interviews
+
+## 🟢 Missing Basics (Layer 1)
+- SQL (joins, window fns, CTEs)
+- Git/GitHub + clean READMEs
+- CLI + venv/conda environments
+- Notebooks → .py scripts
+- Light DSA in Python (~50 LeetCode)
+- Stats for interviews (A/B, p-values, Bayes)
+- BI tool (Power BI / Tableau / Looker)
+
+## 🟡 Pro Engineering (Layer 2)
+- ### Deployment
+  - FastAPI · Streamlit · Gradio
+  - Docker
+  - HuggingFace Spaces · Render · cloud
+- ### MLOps
+  - MLflow / W&B (tracking)
+  - DVC (versioning)
+  - GitHub Actions (CI/CD)
+  - Drift monitoring
+- ### Cloud (pick AWS)
+  - S3 · EC2 · SageMaker · IAM · Lambda
+- ### Better models
+  - XGBoost / LightGBM / CatBoost
+  - Optuna tuning · cross-validation
+  - Imbalanced data (SMOTE, F1/ROC-AUC)
+  - SHAP / LIME interpretability
+- ### Code hygiene
+  - type hints · logging · pytest · project structure
+
+## 🔴 Advanced Edge (Layer 3)
+- ### Modern LLM engineering ⭐
+  - Advanced RAG (chunking, re-ranking, RAGAS)
+  - Vector DBs (Pinecone, Qdrant, Chroma, FAISS)
+  - Agents (LangGraph, CrewAI, function calling)
+  - Fine-tuning (LoRA / QLoRA / PEFT)
+  - Local models (Ollama, vLLM)
+  - LLMOps (cost, caching, LangSmith)
+- ### Deep learning depth
+  - Transformer from scratch
+  - CV: YOLO · ViT · segmentation
+  - Diffusion models
+  - Multimodal (CLIP, LLaVA)
+  - Quantization · distillation · ONNX
+  - Distributed / multi-GPU training
+- ### Research literacy
+  - arXiv · Papers With Code weekly
+  - Reproduce a paper end-to-end
+- ### Pick a specialization
+  - GenAI/LLM Engineer (hottest)
+  - MLOps Engineer
+  - CV / NLP Engineer
+  - Data Scientist
+- ### Be visible (forward phase)
+  - Kaggle → Expert
+  - Open-source contribution
+  - Build in public (blog / LinkedIn)
+  - AI hackathons
+
+## 🧭 Mixed Timeline
+- M1–2: Python + Git + CLI
+- M3–4: ML + SQL + stats → apply Data Analyst
+- M5–6: Deep Learning + FastAPI/Docker + XGBoost
+- M7–8: CNN/RNN + MLOps + cloud → apply Jr ML/GenAI
+- M9–10: LLMs + advanced RAG/agents/LoRA → deploy
+- M11–12+: specialize + reproduce paper + OSS
+    </script>
+  </div>
+</body>
+</html>
